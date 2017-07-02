@@ -1,0 +1,10 @@
+.question-summary {
+	padding: 12px 0 10px 0;
+	border-bottom: 1px solid #e4e6e8;
+}
+
+.narrow .cp {
+	vertical-align: top;
+	float: left;
+	margin-right: 10px;
+}
