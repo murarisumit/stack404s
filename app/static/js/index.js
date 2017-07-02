@@ -25,7 +25,7 @@ var app = new Vue({
 
 
 if (sessionStorage.getItem("at") === null) {
-    window.location.href = "http://localhost/test_login";
+    window.location.href = "http://localhost/login";
 }
 
 function check_if_has404(item) {
@@ -43,7 +43,6 @@ function check_if_has404(item) {
       for ( href of hrefs) {
         link = href.substring(href.indexOf('=')+1).replace(/"/g, "")
         url = window.location.origin + "/check_url?url=" + encodeURIComponent(link)
-        console.log("Checking if link exist: " + url)
         $.ajax({
           crossDomain: true,
           type: "GET",

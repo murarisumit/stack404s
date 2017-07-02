@@ -34,70 +34,17 @@ def enable_cors(fn):
 app = bottle.app()
 
 
+@app.route('/index')
 @app.route('/')
-def home(session):
-    access_token = session.get('token')
-    if access_token is not None:
-        logger.debug("Token is : " + access_token)
-        backend.fetch_user(access_token)
-        response.set_cookie(
-            'access_token',
-            access_token,
-            )
-        return template('index.html', redirect_uri=settings.REDIRECT_URI)
-    else:
-        return template('login.html', redirect_uri=settings.REDIRECT_URI)
+def index():
+    logger.debug(" I'm in index")
+    return template('index.html')
 
 
-@app.route('/answers')
-def get_answer_ids(session):
-    access_token = session.get('token')
-    if access_token is None:
-        redirect('/')
-    access_token = session.get('token')
-    answer_ids = backend.fetch_all_answerids(access_token)
-    if answer_ids:
-        response.content_type = 'application/json'
-        return json.dumps(answer_ids)
-    return None
-
-
-@app.route('/redirect')
-def get_token(session):
-    code = request.query.code
-    payload = {
-        'code': code,
-        "client_id": settings.CLIENT_ID,
-        "client_secret": settings.CLIENT_SECRET,
-        "redirect_uri": settings.REDIRECT_URI
-    }
-    auth_rqst = requests.post(
-        "https://stackexchange.com/oauth/access_token",
-        data=payload
-    )
-    access_token, expires = auth_rqst.text.split('&')
-    logger.debug(auth_rqst.text)
-    session['token'] = access_token.split('=')[1]
-    logging.debug("Token is: " + session['token'])
-    redirect("/")
-
-
-@app.route('/static/<filepath:path>')
-def server_static(filepath):
-    return static_file(filepath, root=settings.ROOT_DIR+"/static")
-
-
-@app.route('/test_login')
+@app.route('/login')
 def test_login():
     logger.debug(" I'm in test_login")
-    return template('test_login.html')
-
-
-@app.route('/test_index')
-@enable_cors
-def test_index():
-    logger.debug(" I'm in test_index")
-    return template('test_index.html')
+    return template('login.html')
 
 
 @app.route('/check_url')
@@ -110,14 +57,17 @@ def check_url():
     response.status = r.status_code
 
 
+@app.route('/static/<filepath:path>')
+def server_static(filepath):
+    return static_file(filepath, root=settings.ROOT_DIR+"/static")
+
+
 @app.route('/blank')
 def test_via_js():
     return
 
 
 def main():
-    plugin = bottle_session.SessionPlugin(cookie_lifetime=600)
-    app.install(plugin)
     app.run(
         host='localhost',
         port=settings.PORT,

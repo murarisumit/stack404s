@@ -34,7 +34,7 @@ $('#login-button').click(function() {
               }
             }
             console.log(data)
-            window.location.href = "http://localhost/test_index";
+            window.location.href = "http://localhost/";
         },
         error: function(data) {
             alert('An error occurred:\n' + data.errorName + '\n' + data.errorMessage);
