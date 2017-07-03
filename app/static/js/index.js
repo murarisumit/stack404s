@@ -65,8 +65,6 @@ function process_answers(items) {
   for (item of items) {
       check_if_has404(item)
   }
-  const contain = document.querySelector('#container');
-  contain.innerHTML = `<ul> ${full_list} </ul>`;
 }
 
 function get_all_answers() {
@@ -80,6 +78,10 @@ function get_all_answers() {
 
   $.ajax(settings).done(function (response) {
     process_answers(response.items)
+  }).
+  fail(function (response) {
+    console.log("Error while fetching all answers. Response: " + response)
+    window.location.href = "http://localhost/login"
   });
 
 }
