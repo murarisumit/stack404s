@@ -12,7 +12,7 @@ SE.init({
     complete: function(data) {
         $('#login-button')
             .removeAttr('disabled')
-            .text('Run Example With Version '+data.version);
+            .text('Click here to login');
 
     }
 });
