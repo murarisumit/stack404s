@@ -8,14 +8,14 @@
         <div id="login" v-if="modal_box">
             <vue-login-component></vue-login-component>
         </div>
-       <div id="home" class="container">
-            <p> Welcome </p>
-            <div class="row">
-                <ul class="col-xs-12" >
-                    <template v-for="item in answers_404">
-                        <li><a :href="item.obj.q_url" target="_blank"> ${ item.obj.q_url} </a></li>
-                    </template>
-                </ul>
+        <div id="home" class="container">
+            <div class = "page-header">
+                <h1> Stack 404 <small>See 404's in your answers</small> </span> </h1>
+            </div>
+            <div class="row list-group">
+                <template v-for="item in answers_404">
+                    <a :href="item.obj.ques_url" class="list-group-item list-group-item-action" target=_blank>${ item.obj.ques_title}</a>
+                </template>
             </div>
         </div>
         % include('footer.tpl')
