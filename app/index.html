@@ -1,0 +1,40 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+            <meta charset="utf-8">
+            <meta http-equiv="x-ua-compatible" content="ie=edge">
+            <title>Welcome</title>
+            <meta name="description" content="">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+
+            <link rel="apple-touch-icon"   href="/static/apple-touch-icon.png">
+            <!-- Place favicon.ico in the root directory -->
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" ></script>
+            <script src="https://unpkg.com/vue@2.4.1/dist/vue.min.js"></script>
+            <link   rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo= sha512-2e8qq0ETcfWRI4HJBzQiA3UoyFk6tbNyG+qSaIBZLyW9Xf3sWZHN/lxe9fTh1U45DpPf07yj94KsUHHWe4Yk1A=="crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a  href="/static/http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <div id="login" v-if="modal_box">
+            <vue-login-component></vue-login-component>
+        </div>
+        <div id="home" class="container">
+            <div class = "page-header">
+                <h1> Stack 404 <small>See 404's in your answers</small> </span> </h1>
+            </div>
+            <div class="row list-group">
+                <template v-for="item in answers_404">
+                    <a :href="item.obj.ques_url" class="list-group-item list-group-item-action" target=_blank>${ item.obj.ques_title}</a>
+                </template>
+            </div>
+        </div>
+
+        <link rel="stylesheet" type="text/css" href="static/css/index.css" >
+        <script src="static/js/plugins.js"></script>
+        <script src="static/js/index.js"></script>
+    </body>
+</html>

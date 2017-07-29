@@ -4,8 +4,7 @@ Vue.component('vue-login-component', {
   template: `
     <div id="modal_div" class="modal">
       <div class="modal-dialog modal-sm">
-        <!-- Modal content -->
-        <div class="modal-content">
+        <!-- Modal content --> <div class="modal-content">
           <div class="modal-header">
             <button v-on:click="authenticate" id="login-button" class="btn btn-primary">Login via StackExchange</button>
           </div>
@@ -23,14 +22,16 @@ Vue.component('vue-login-component', {
           clientId: 9429,
           key: 'Oi2fc61XpWFaTzCK9*vljw((',
           // Used for cross domain communication, it will be validated
-          channelUrl: 'http://localhost/blank',
+          // channelUrl: 'http://stack404s.murarisumit.in.s3-website.ap-south-1.amazonaws.com/blank.html',
+          channelUrl: 'http://localhost/blank.html',
           // Called when all initialization is finished
           complete: function(data) {
             console.log("init done")
           }
         })
-        SE.authenticate({
+       SE.authenticate({
           success: function(data) {
+            console.log("in authenticate")
             sessionStorage.setItem("at", data.accessToken);
             for (network of data.networkUsers) {
               //network is each stackoverflow site
@@ -103,7 +104,8 @@ var app = new Vue({
       var self = this
       console.log("In: add_404")
       q_url = this.site_url + "/questions/" + answer_obj.question_id
-      answer_obj["ques_url"] = q_url
+      //answer_obj["ques_url"] = q_url
+      answer_obj["ques_url"] = q_url + "#answer-" + answer_obj.answer_id
 
       fetch_ques_url = this.api_url + "/questions/" + answer_obj.question_id + "?access_token=" + sessionStorage.getItem('at') + "&site=stackoverflow&key=" + this.key
       var settings = {
@@ -143,10 +145,17 @@ var app = new Vue({
             $.ajax({
               crossDomain: true,
               type: "GET",
-              url: "/check_url?url=" + encodeURIComponent(link),
+              dataType: "json",
+              url: "https://stack404s.murarisumit.in/checkurl?url=" + encodeURIComponent(link),
             }).done(function (msg) {
-                self.add_working(item)
+                if(msg.statusCode == 200) {
+                  self.add_working(item)
+                }
+                else {
+                  self.add_404(item)
+                }
               }).fail(function(msg) {
+                console.log("Error while checking url status")
                 self.add_404(item)
                 console.log( "error" + JSON.stringify(msg) );
               });
