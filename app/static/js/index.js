@@ -19,11 +19,12 @@ Vue.component('vue-login-component', {
       $.getScript( "https://api.stackexchange.com/js/2.0/all.js" )
       .done(function( script, textStatus ) {
         SE.init({
-          clientId: 9429,
-          key: 'Oi2fc61XpWFaTzCK9*vljw((',
+          clientId: config.clientId,
+          key: config.key,
+          //key: 'Oi2fc61XpWFaTzCK9*vljw((',
           // Used for cross domain communication, it will be validated
           // channelUrl: 'http://stack404s.murarisumit.in.s3-website.ap-south-1.amazonaws.com/blank.html',
-          channelUrl: 'http://localhost/blank.html',
+          channelUrl: config.channelUrl,
           // Called when all initialization is finished
           complete: function(data) {
             console.log("init done")
@@ -86,10 +87,10 @@ var app = new Vue({
   delimiters: ['${', '}'],
   el: '#home',
   data: {
-    key: "Oi2fc61XpWFaTzCK9*vljw((",
-    site_name: "stackoverflow",
-    site_url: "https://stackoverflow.com",
-    api_url: "https://api.stackexchange.com",
+    key: config.key,
+    site_name: config.site_name,
+    site_url: config.site_url,
+    api_url: config.api_url,
     answers_working: [],
     answers_404: []
   },
