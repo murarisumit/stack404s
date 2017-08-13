@@ -8,6 +8,7 @@ Vue.component('vue-login-component', {
           <div class="modal-header">
             <button v-on:click="authenticate" id="login-button" class="btn btn-primary">Login via StackExchange</button>
           </div>
+          <center> <small> We don't store any of your details </small>
         </div>
       </div>
     </div>
@@ -15,47 +16,8 @@ Vue.component('vue-login-component', {
   methods: {
     authenticate: function() {
       // `this` inside methods points to the Vue instance
-      console.log("in authenticate")
-      $.getScript( "https://api.stackexchange.com/js/2.0/all.js" )
-      .done(function( script, textStatus ) {
-        SE.init({
-          clientId: config.clientId,
-          key: config.key,
-          //key: 'Oi2fc61XpWFaTzCK9*vljw((',
-          // Used for cross domain communication, it will be validated
-          // channelUrl: 'http://stack404s.murarisumit.in.s3-website.ap-south-1.amazonaws.com/blank.html',
-          channelUrl: config.channelUrl,
-          // Called when all initialization is finished
-          complete: function(data) {
-            console.log("init done")
-          }
-        })
-       SE.authenticate({
-          success: function(data) {
-            console.log("in authenticate")
-            sessionStorage.setItem("at", data.accessToken);
-            for (network of data.networkUsers) {
-              //network is each stackoverflow site
-              if( network.site_url === "https://stackoverflow.com" ) {
-                console.log("Got data from SO")
-                sessionStorage.setItem("uid", network.user_id);
-                login.hide_modal_box()
-                break
-              }
-            }
-            if( sessionStorage.getItem('uid') === null) {
-              alert("Unable to fetch USER_ID, something wrong happened")
-            }
-          },
-          error: function(data) {
-              alert('an error occurred:\n' + data.errorName + '\n' + data.errorMessage);
-          },
-          networkUsers: true
-        });
-      })
-      .fail(function( jqxhr, settings, exception ) {
-        console.log("Error in authenticating via SE")
-      });
+      console.log("in authenticate");
+      window.open('https://stackexchange.com/oauth/dialog?client_id=9429&redirect_uri=' + app.redirect_url);
     }
   },
 })
@@ -70,15 +32,15 @@ var login = new Vue({
   methods: {
     show_modal_box: function() {
       console.log("show_modal_box")
-      this.modal_box= true
+      this.modal_box= true;
     },
     hide_modal_box: function() {
       console.log("hiding_modal_box")
-      this.modal_box= false
-      app.get_all_answers()
+      this.modal_box= false;
+      app.get_all_answers();
     },
     status_modal_box: function() {
-      console.log(this.modal_box)
+      console.log(this.modal_box);
     },
   }
 });
@@ -88,6 +50,7 @@ var app = new Vue({
   el: '#home',
   data: {
     key: config.key,
+    redirect_url: config.redirect_url,
     site_name: config.site_name,
     site_url: config.site_url,
     api_url: config.api_url,
@@ -108,7 +71,7 @@ var app = new Vue({
       //answer_obj["ques_url"] = q_url
       answer_obj["ques_url"] = q_url + "#answer-" + answer_obj.answer_id
 
-      fetch_ques_url = this.api_url + "/questions/" + answer_obj.question_id + "?access_token=" + sessionStorage.getItem('at') + "&site=stackoverflow&key=" + this.key
+      fetch_ques_url = this.api_url + "/questions/" + answer_obj.question_id + "?access_token=" + localStorage.getItem('at') + "&site=stackoverflow&key=" + this.key
       var settings = {
         "async": true,
         "crossDomain": true,
@@ -131,7 +94,7 @@ var app = new Vue({
       console.log("In: check_if_has404")
       let full_list = '';
       var self = this
-      fetch_answer_url = this.api_url + "/answers/" + item.answer_id + "?access_token=" + sessionStorage.getItem('at') + "&site=stackoverflow&key=" + this.key + "&filter=withbody"
+      fetch_answer_url = this.api_url + "/answers/" + item.answer_id + "?access_token=" + localStorage.getItem('at') + "&site=stackoverflow&key=" + this.key + "&filter=withbody"
       var settings = {
         "async": true,
         "crossDomain": true,
@@ -170,10 +133,10 @@ var app = new Vue({
           this.check_if_has404(item)
       }
     },
-    get_all_answers: function() {
+    get_all_answers: function(access_token) {
       console.log("In : get_all_answers()")
       var self = this;
-      var get_token_url =  this.api_url + "/me/answers?access_token=" + sessionStorage.getItem('at') + "&site=" + this.site_name + "&key=" + this.key
+      var get_token_url =  this.api_url + "/me/answers?access_token=" + access_token + "&site=" + this.site_name + "&key=" + this.key
       console.log(get_token_url)
       var settings = {
         "async": true,
@@ -194,9 +157,9 @@ var app = new Vue({
 })
 
 
-if (sessionStorage.getItem("at") === null) {
+if (localStorage.getItem("at") === null) {
   login.show_modal_box()
 }
 else {
-  app.get_all_answers()
+  app.get_all_answers(localStorage.getItem("at"))
 }

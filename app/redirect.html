@@ -1,0 +1,16 @@
+<script>
+function getHashValue(key) {
+  var matches = location.hash.match(new RegExp(key+'=([^&]*)'));
+  return matches ? matches[1] : null;
+}
+var access_token = getHashValue('access_token');
+if (access_token === null ) {
+    alert("Not able to fetch access credentials")
+    window.close();
+}
+else {
+    localStorage.setItem("at", access_token);
+    window.opener.location.reload();
+    window.close();
+}
+</script>

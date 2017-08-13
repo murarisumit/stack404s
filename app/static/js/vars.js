@@ -5,6 +5,7 @@ var config = {
   site_name: 'stackoverflow',
   site_url: 'https://stackoverflow.com',
   api_url: 'https://api.stackexchange.com',
+  redirect_url: 'http://localhost/redirect.html',
   option2: {name: 'bad'},
   option3: ['u','g','l','y']
 }
