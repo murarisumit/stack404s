@@ -50,6 +50,7 @@ var app = new Vue({
   el: '#home',
   data: {
     key: config.key,
+    reload: true,
     redirect_url: config.redirect_url,
     site_name: config.site_name,
     site_url: config.site_url,
@@ -60,16 +61,17 @@ var app = new Vue({
   methods: {
     add_working: function(item_obj) {
       console.log("In: add_working")
-      ques_url = this.site_url + "/questions/" + item_obj.question_id
-      item_obj["q_url"] = ques_url
-      this.answers_working.push({ obj: item_obj})
+      ques_url = this.site_url + "/questions/" + item_obj.question_id;
+      item_obj["q_url"] = ques_url;
+      this.answers_working.push({ obj: item_obj});
     },
     add_404: function(answer_obj) {
-      var self = this
+      $('#loading').hide();
+      var self = this;
       console.log("In: add_404")
-      q_url = this.site_url + "/questions/" + answer_obj.question_id
+      q_url = this.site_url + "/questions/" + answer_obj.question_id;
       //answer_obj["ques_url"] = q_url
-      answer_obj["ques_url"] = q_url + "#answer-" + answer_obj.answer_id
+      answer_obj["ques_url"] = q_url + "#answer-" + answer_obj.answer_id;
 
       fetch_ques_url = this.api_url + "/questions/" + answer_obj.question_id + "?access_token=" + localStorage.getItem('at') + "&site=stackoverflow&key=" + this.key
       var settings = {
@@ -89,6 +91,7 @@ var app = new Vue({
       }).always(function(msg) {
         self.answers_404.push({ obj: answer_obj})
       });
+      this.reload = false;
     },
     check_if_has404: function(item) {
       console.log("In: check_if_has404")
@@ -128,38 +131,44 @@ var app = new Vue({
       });
     },
     process_answers: function(items) {
-      console.log("In : process_answers()")
+      console.log("In : process_answers()");
       for (item of items) {
-          this.check_if_has404(item)
+          this.check_if_has404(item);
+      }
+      // hide loading bar if there are no bad question out there and show happy message.
+      if ( this.add_404.length === 0 ) {
+        $('#loading').hide();
+        $("#home").append("<h3> Great links, parsed" + items.length + " questions, didn't found any 404 links</h3>");
       }
     },
     get_all_answers: function(access_token) {
-      console.log("In : get_all_answers()")
+      $('#loading').show();
+      console.log("In : get_all_answers()");
       var self = this;
-      var get_token_url =  this.api_url + "/me/answers?access_token=" + access_token + "&site=" + this.site_name + "&key=" + this.key
-      console.log(get_token_url)
+      var get_token_url =  this.api_url + "/me/answers?access_token=" + access_token + "&site=" + this.site_name + "&key=" + this.key;
+      console.log(get_token_url);
       var settings = {
         "async": true,
         "crossDomain": true,
         "url": get_token_url,
         "method": "GET",
-      }
+      };
       $.ajax(settings).done(function (response) {
-        self.process_answers(response.items)
+        self.process_answers(response.items);
       }).
       fail(function (response) {
-        console.log("Error while fetching all answers. Response: " + response.responseText)
-        alert("Error while fetching answers, reloading the page ")
-        location.reload()
+        console.log("Error while fetching all answers. Response: " + response.responseText);
+        alert("Error while fetching answers, reloading the page ");
+        location.reload();
       });
     }
   }
-})
+});
 
 
 if (localStorage.getItem("at") === null) {
-  login.show_modal_box()
+  login.show_modal_box();
 }
 else {
-  app.get_all_answers(localStorage.getItem("at"))
+  app.get_all_answers(localStorage.getItem("at"));
 }

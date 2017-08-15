@@ -26,13 +26,13 @@
             <div class = "page-header">
                 <h1> Stack 404 <small>See 404's in your answers</small> </span> </h1>
             </div>
+            <img id="loading" src="static/images/loading.gif"/>
             <div class="row list-group">
                 <template v-for="item in answers_404">
                     <a :href="item.obj.ques_url" class="list-group-item list-group-item-action" target=_blank>${ item.obj.ques_title}</a>
                 </template>
             </div>
         </div>
-
         <link rel="stylesheet" type="text/css" href="static/css/index.css" >
         <script src="static/js/vars.js"></script>
         <script src="static/js/plugins.js"></script>

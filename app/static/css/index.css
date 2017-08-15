@@ -31,3 +31,16 @@
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
 }
+
+#loading {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto; /* presto! */
+}
+
+a.list-group-item, button.list-group-item {
+    margin: 5px;
+}
