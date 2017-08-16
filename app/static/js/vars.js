@@ -8,4 +8,4 @@ var config = {
   redirect_url: 'http://localhost/redirect.html',
   option2: {name: 'bad'},
   option3: ['u','g','l','y']
-}
+};

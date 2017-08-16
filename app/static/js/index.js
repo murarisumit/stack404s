@@ -31,12 +31,14 @@ var login = new Vue({
   },
   methods: {
     show_modal_box: function() {
-      console.log("show_modal_box")
+      app.hide_progess_bar();
+      console.log("show_modal_box");
       this.modal_box= true;
     },
     hide_modal_box: function() {
-      console.log("hiding_modal_box")
+      console.log("hiding_modal_box");
       this.modal_box= false;
+      app.show_progess_bar()
       app.get_all_answers();
     },
     status_modal_box: function() {
@@ -66,7 +68,7 @@ var app = new Vue({
       this.answers_working.push({ obj: item_obj});
     },
     add_404: function(answer_obj) {
-      $('#loading').hide();
+      this.hide_progess_bar();
       var self = this;
       console.log("In: add_404")
       q_url = this.site_url + "/questions/" + answer_obj.question_id;
@@ -136,13 +138,12 @@ var app = new Vue({
           this.check_if_has404(item);
       }
       // hide loading bar if there are no bad question out there and show happy message.
+      this.hide_progess_bar();
       if ( this.add_404.length === 0 ) {
-        $('#loading').hide();
         $("#home").append("<h3> Great links, parsed" + items.length + " questions, didn't found any 404 links</h3>");
       }
     },
     get_all_answers: function(access_token) {
-      $('#loading').show();
       console.log("In : get_all_answers()");
       var self = this;
       var get_token_url =  this.api_url + "/me/answers?access_token=" + access_token + "&site=" + this.site_name + "&key=" + this.key;
@@ -161,7 +162,14 @@ var app = new Vue({
         alert("Error while fetching answers, reloading the page ");
         location.reload();
       });
+    },
+    show_progess_bar: function () {
+      $('#loading').show();
+    },
+    hide_progess_bar: function () {
+      $('#loading').hide();
     }
+
   }
 });
 
