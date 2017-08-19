@@ -1,11 +1,3 @@
-Pull facebook group feed and gives feed in most-recent order
-Rename config file name sample.config.ini to config.ini.
+Get 404 links from your [stackoverflow](http://www.stackoverflow.com) answers.
 
-
-Requires: 
-    Redis python wrapper: https://github.com/chester89/redis-py.git:zadd-options
-
-
-Run `backend.py` (python backend.py) to pull data from data from facebook and push to redis.
-Run `web_feed.py` (python web_feed.py) to get feeds at `localhost:8888/feed`
-
+It pulls data from [stackexchange api]( https://api.stackexchange.com/  ) and then run on client side javascript on browser.
