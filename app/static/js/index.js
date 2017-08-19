@@ -139,9 +139,6 @@ var app = new Vue({
       }
       // hide loading bar if there are no bad question out there and show happy message.
       this.hide_progess_bar();
-      if ( this.add_404.length === 0 ) {
-        $("#home").append("<h3> Great links, parsed" + items.length + " questions, didn't found any 404 links</h3>");
-      }
     },
     get_all_answers: function(access_token) {
       console.log("In : get_all_answers()");
@@ -180,3 +177,17 @@ if (localStorage.getItem("at") === null) {
 else {
   app.get_all_answers(localStorage.getItem("at"));
 }
+
+$( document ).ajaxStop(function() {
+  //$( ".status" ).text( "Triggered ajaxStop handler." );
+
+  total_links = parseInt(app.answers_working.length) + parseInt(app.answers_404.length);
+  if ( app.answers_404.length === 0 ) {
+    console.log(app.answers_working.length);
+    console.log(app.answers_404.length);
+    $("#status").append("<center> <h4> All good, parsed " + total_links  + " links, didn't found any 404 links</h4></center>");
+  }
+  else {
+    $("#status").append("<center> <h4> Parsed " + total_links  + " links.</h4></center>");
+  }
+});
