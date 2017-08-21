@@ -3,12 +3,21 @@
 Vue.component('vue-login-component', {
   template: `
     <div id="modal_div" class="modal">
-      <div class="modal-dialog modal-sm">
+      <div class="modal-dialog modal-lg">
         <!-- Modal content --> <div class="modal-content">
           <div class="modal-header">
-            <button v-on:click="authenticate" id="login-button" class="btn btn-primary">Login via StackExchange</button>
+            <center> <h4> What does it do ? </h4> </center>
           </div>
-          <center> <small> We don't store any of your details </small>
+          <div class="modal-body">
+            <p> Stackoverflow is spectacular resource for developers, but there are some answers in stackoverflow with broken links.
+            This is small application that parses all your answers and checks if there is any broken link then lists it to you.<p>
+            <p> It's a almost a static <a href="https://vuejs.org/">VueJS </a> app, which is served from cloudfront and uses <a href="https://github.com/aws/chalice"> chalice </a> to check for URL status.
+            The app is pretty small and can be <a href="https://github.com/murarisumit/stack404s"> found here on github </a> </p>
+            </div>
+          <div class="modal-footer">
+            <center> <button v-on:click="authenticate" id="login-button" class="btn btn-primary">StackExchange Login</button> </center>
+            <center> <small> We don't store any of your details </small>
+          </div>
         </div>
       </div>
     </div>
